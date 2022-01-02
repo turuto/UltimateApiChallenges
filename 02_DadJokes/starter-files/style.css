@@ -51,6 +51,13 @@ body {
 	font-weight: bold;
 }
 
+#joke {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+}
+
 /* BUTTON */
 
 .button {

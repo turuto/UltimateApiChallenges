@@ -37,7 +37,7 @@ const fetchJoke = function () {
     })
         .then(response => {
             if (response.status === 200) {
-                response.text()
+                return response.text();
             }
         })
         .then(data => {
