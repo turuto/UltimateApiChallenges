@@ -53,7 +53,6 @@ const displayJoke = function (joke) {
 }
 
 const displayError = function (msg) {
-    console.log('hello');
     SELECTORS.ERROR.querySelector('#error-message').textContent = msg;
     SELECTORS.ERROR.classList.remove('isHidden');
     changeButtonState('active');
