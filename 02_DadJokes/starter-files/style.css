@@ -85,6 +85,10 @@ body {
 	animation: fadein 1s;
 }
 
+.isDisabled {
+	pointer-events: none;
+}
+
 /* LOADER */
 
 .button__loader {

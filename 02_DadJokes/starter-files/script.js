@@ -71,15 +71,17 @@ const changeButtonState = function (state) {
     };
 
     if (state === states.loading) {
-        SELECTORS.LOADER.style.display = 'block'
-        SELECTORS.CTA.style.display = 'none'
-        return
+        SELECTORS.BUTTON.classList.add('isDisabled');
+        SELECTORS.LOADER.style.display = 'block';
+        SELECTORS.CTA.style.display = 'none';
+        return;
     }
 
     if (state === states.active) {
-        SELECTORS.LOADER.style.display = 'none'
-        SELECTORS.CTA.style.display = 'block'
-        return
+        SELECTORS.BUTTON.classList.remove('isDisabled');
+        SELECTORS.LOADER.style.display = 'none';
+        SELECTORS.CTA.style.display = 'block';
+        return;
     }
 }
 
