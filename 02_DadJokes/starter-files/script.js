@@ -8,42 +8,80 @@
  * 7. Bonus: change button CTA to indicate if it's the first joke or a "next" one
  */
 
-const API_ENDPOINT = 'https://icanhazdadjoke.cosm/';
+const API_ENDPOINT = 'https://icanhazdadjoke.com/';
 const SELECTORS = {};
 SELECTORS.BUTTON = document.querySelector('#button');
+SELECTORS.LOADER = document.querySelector('#loader');
+SELECTORS.CTA = document.querySelector('#cta');
 SELECTORS.JOKE = document.querySelector('#joke');
+SELECTORS.ERROR = document.querySelector('#error-container > p');
 
 let isFirstRequest = true;
 let isRequestInProgress = false;
 
-const getAnswer = function () {
+const askForJoke = function () {
     isFirstRequest ? removeFirstFlag() : '';
-    fetchAnswer();
+    if (!isRequestInProgress) {
+        isRequestInProgress = true;
+        changeButtonState('loading');
+        SELECTORS.ERROR.classList.add('isHidden');
+        fetchJoke();
+    }
 }
 
-const fetchAnswer = function () {
+const fetchJoke = function () {
     fetch(API_ENDPOINT, {
         headers: {
             "Accept": "text/plain"
         }
     })
         .then(response => {
-            response.text()
+            if (response.status === 200) {
+                response.text()
+            }
         })
         .then(data => {
+            isRequestInProgress = false;
             displayJoke(data);
         })
-        .catch(error => console.log('error: ', error));
+        .catch(error => displayError(error));
 }
 
 const displayJoke = function (joke) {
     SELECTORS.JOKE.textContent = joke;
+    changeButtonState('active');
+}
+
+const displayError = function (msg) {
+    console.log('hello');
+    SELECTORS.ERROR.querySelector('#error-message').textContent = msg;
+    SELECTORS.ERROR.classList.remove('isHidden');
+    changeButtonState('active');
 }
 
 const removeFirstFlag = function () {
     isFirstRequest = false;
-    SELECTORS.BUTTON.textContent = 'Get Another one';
+    SELECTORS.CTA.textContent = 'Get Another one';
 }
 
+const changeButtonState = function (state) {
+    const states = {
+        loading: 'loading',
+        disabled: 'disabled',
+        active: 'active'
+    };
 
-SELECTORS.BUTTON.addEventListener('click', getAnswer);
+    if (state === states.loading) {
+        SELECTORS.LOADER.style.display = 'block'
+        SELECTORS.CTA.style.display = 'none'
+        return
+    }
+
+    if (state === states.active) {
+        SELECTORS.LOADER.style.display = 'none'
+        SELECTORS.CTA.style.display = 'block'
+        return
+    }
+}
+
+SELECTORS.BUTTON.addEventListener('click', askForJoke);
